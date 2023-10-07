@@ -1,0 +1,77 @@
+
+Certainly! Here's a list of JDBC methods commonly used when working with PostgreSQL databases in Java, along with their brief definitions:
+
+1) Driver Registration:
+
+Class.forName("org.postgresql.Driver");
+Registers the PostgreSQL JDBC driver class.
+
+2)Connection Establishment:
+
+Connection connection = DriverManager.getConnection(url, username, password);
+Establishes a connection to the PostgreSQL database using the provided URL, username, and password.
+
+3)Statement Creation:
+
+Statement statement = connection.createStatement();
+Creates a Statement object for executing SQL queries.
+PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
+Creates a PreparedStatement object for executing precompiled SQL queries.
+
+4) Executing Queries:
+
+ResultSet resultSet = statement.executeQuery(sqlQuery);
+Executes a SQL SELECT query and returns the result as a ResultSet.
+int rowsAffected = statement.executeUpdate(sqlQuery);
+Executes SQL queries that modify the database and returns the number of affected rows.
+Fetching Data from ResultSet:
+
+while (resultSet.next()) { ... }
+Iterates through the rows in the ResultSet.
+String value = resultSet.getString("column_name");
+Retrieves the value of the specified column from the current row in the ResultSet.
+
+5) Batch Processing:
+
+statement.addBatch(sqlQuery);
+Adds a SQL command to the current batch of statements for execution.
+int[] batchResult = statement.executeBatch();
+Executes the batch of SQL commands and returns an array of update counts.
+Transaction Management:
+
+connection.setAutoCommit(false);
+Disables auto-commit mode for the connection.
+connection.commit();
+Commits the current transaction.
+connection.rollback();
+Rolls back the current transaction.
+Prepared Statements:
+
+preparedStatement.setXXX(parameterIndex, value);
+Sets the value of a parameter in a PreparedStatement.
+preparedStatement.executeUpdate();
+Executes the PreparedStatement and returns the number of affected rows.
+
+6)ResultSet Metadata:
+
+ResultSetMetaData metaData = resultSet.getMetaData();
+Retrieves metadata about the columns in the ResultSet.
+int columnCount = metaData.getColumnCount();
+Returns the number of columns in the ResultSet.
+
+7)Closing Resources:
+
+resultSet.close();
+Closes the ResultSet.
+statement.close();
+Closes the Statement.
+connection.close();
+Closes the Connection.
+
+8)Handling Exceptions:
+
+JDBC methods can throw SQLException. Proper exception handling is essential.
+
+9)Connection Pooling (Advanced):
+
+Connection pooling libraries like Apache Commons DBCP or HikariCP can provide advanced connection management.

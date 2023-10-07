@@ -115,8 +115,11 @@ public class _1Users_UI {
                                                     PreparedStatement pst = con.prepareStatement(update_password);
                                                     pst.setString(1, update_password);
                                                     pst.setString(2,user_id1);
-                                                    pst.executeUpdate();
-                                                    System.out.println("PASSWORD UPDATE SUCCESFULLY");
+        
+                                                    if(pst.executeUpdate()>0){
+
+                                                        System.out.println("PASSWORD UPDATE SUCCESFULLY");
+                                                    }
                                                 
                                             }
                                         }

@@ -17,6 +17,7 @@ public class Login_template extends JFrame {
     static CardLayout cardLayout = new CardLayout();
     static JPanel cardPanel = new JPanel(cardLayout);
     public static Connection con = null;
+    static int falied_count = 0;
 
     Login_template() throws Exception {
         Class.forName("org.postgresql.Driver");
@@ -73,6 +74,12 @@ public class Login_template extends JFrame {
         passwordtext.setBounds(150, 250, 200, 40);
         passwordArea.setBounds(350, 260, 100, 25);
 
+        ImageIcon imageIcon1 = new ImageIcon("group_icon.jpg");
+        JLabel imageLabel = new JLabel(imageIcon1);
+        JPanel photo = new JPanel();
+        photo.setBounds(670, 300, 330, 403);
+        photo.add(imageLabel);
+
         JButton Login_Button = new JButton("Login");
         Login_Button.setBounds(400, 400, 110, 45);
 
@@ -90,21 +97,6 @@ public class Login_template extends JFrame {
         redNote.setForeground(Color.RED);
         redNote.setBounds(650, 150, 600, 160);
 
-        JPanel photo = new JPanel();
-        ImageIcon imageIcon = new ImageIcon("C:\\Java language\\java programs\\src\\JDBC\\src\\group_icon.jpg"); // Replace with your image file path
-        JLabel imageLabel = new JLabel(imageIcon);
-    
-        imageLabel.setBounds(650, 250, 111, 160);
-
-        
-        photo.add(imageLabel);
-        panel.add(photo);
-        panel.add(redNote);
-        panel.add(passwordArea);
-        panel.add(passwordtext);
-        panel.add(textArea);
-        panel.add(Text);
-        panel.add(Login_Button);
         SignUp_Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -138,14 +130,53 @@ public class Login_template extends JFrame {
                     } else {
                         JOptionPane.showMessageDialog(frame, "Login Failed", "Error",
                                 JOptionPane.WARNING_MESSAGE);
+                        falied_count++;
+                    }
+
+                    if (falied_count > 2) {
+                        int result1 = JOptionPane.showConfirmDialog(frame, "Do you want to change the password ");
+                        switch (result1) {
+                            case JOptionPane.YES_OPTION:
+                                JTextField answer1 = new JTextField();
+                                JTextField answer2 = new JTextField();
+                                JTextField answer3 = new JTextField();
+
+                                int result;
+                                String question1 = "Enter the favourite color";
+                                String question2 = "Enter the favourite city";
+                                String question3 = "Enter your Nephew (NA if you don't have one)";
+                                result = JOptionPane.showOptionDialog(frame, new Object[] { question1,
+                                        answer1, question2, answer2, question3, answer3 },
+                                        "Login", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                                        null, null);
+                                if (result == JOptionPane.OK_OPTION)
+                                    System.out.println(answer1.getText() + " " + new String(answer2.getText()));
+                                break;
+                            case JOptionPane.NO_OPTION:
+
+                                break;
+                            case JOptionPane.CANCEL_OPTION:
+                                break;
+                            default:
+                                break;
+                        }
+
                     }
                 } catch (Exception e1) {
-                    JOptionPane.showMessageDialog(frame, "Login Failed", "Error",
+                    JOptionPane.showMessageDialog(frame, "Don't keep field empty", "Error",
                             JOptionPane.WARNING_MESSAGE);
+                    falied_count++;
                 }
             }
         });
 
+        panel.add(photo);
+        panel.add(redNote);
+        panel.add(passwordArea);
+        panel.add(passwordtext);
+        panel.add(textArea);
+        panel.add(Text);
+        panel.add(Login_Button);
         panel.add(label);
         panel.add(label2);
         panel.add(SignUp_Button);
@@ -183,11 +214,6 @@ public class Login_template extends JFrame {
         redNote.setFont(new Font("Arial", Font.BOLD, 20));
         redNote.setForeground(Color.RED);
         redNote.setBounds(650, 130, 600, 160);
-        ImageIcon imageIcon1 = new ImageIcon("group_icon.jpg");
-        JLabel imageLabel = new JLabel(imageIcon1);
-        JPanel photo = new JPanel();
-        photo.setBounds(670, 300, 330, 403);
-        photo.add(imageLabel);
 
         JButton create_acct_Button = new JButton("Create account");
         create_acct_Button.setBounds(400, 550, 150, 50);
@@ -256,7 +282,30 @@ public class Login_template extends JFrame {
         passwordtext.setFont(new Font("Arial", Font.BOLD, 15));
         passwordtext.setBounds(130, 470, 200, 40);
         passwordArea.setBounds(350, 470, 100, 25);
+        JLabel questions_text = new JLabel("Give answer of the question for privacy purpose");
+        questions_text.setFont(new Font("Arial", Font.BOLD, 20));
+        questions_text.setBounds(650, 270, 600, 160);
+        JTextField answer1 = new JTextField();
+        JTextField answer2 = new JTextField();
+        JTextField answer3 = new JTextField();
 
+        String question1 = "Enter the favourite color";
+        String question2 = "Enter the favourite city";
+        String question3 = "Enter your Nephew (NA if you don't have one)";
+
+        JLabel label1 = new JLabel(question1);
+        JLabel label2 = new JLabel(question2);
+        JLabel label3 = new JLabel(question3);
+        label1.setFont(new Font("Arial", Font.BOLD, 15));
+        label2.setFont(new Font("Arial", Font.BOLD, 15));
+        label3.setFont(new Font("Arial", Font.BOLD, 15));
+        label1.setBounds(650, 310, 600, 160);
+        label2.setBounds(650, 370, 600, 160);
+        label3.setBounds(650, 430, 600, 160);
+        answer1.setBounds(850, 380, 110, 20);
+        answer2.setBounds(850, 450, 110, 20);
+        answer3.setBounds(750, 540, 110, 20);
+        
         create_acct_Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -302,7 +351,7 @@ public class Login_template extends JFrame {
                             JOptionPane.WARNING_MESSAGE);
                 }
                 if (flag) {
-                    String insert_values = "INSERT INTO account_details (user_name, password, email, phone_no, city, state, pincode,dob) VALUES (?,?,?,?,?,?,?,?)";
+                    String insert_values = "INSERT INTO account_details (user_name, password, email, phone_no, city, state, pincode,dob,question1,question2,question3) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
                     try {
                         PreparedStatement pst = con.prepareStatement(insert_values);
                         pst.setString(1, user_name);
@@ -313,6 +362,9 @@ public class Login_template extends JFrame {
                         pst.setString(6, State);
                         pst.setLong(7, pinc);
                         pst.setDate(8, Dob);
+                        pst.setString(9, answer1.getText());
+                        pst.setString(10, answer2.getText());
+                        pst.setString(11, answer3.getText());
                         if (pst.executeUpdate() > 0) {
                             JOptionPane.showMessageDialog(frame, "Your account is created", "Success",
                                     JOptionPane.INFORMATION_MESSAGE);
@@ -324,19 +376,26 @@ public class Login_template extends JFrame {
                             PreparedStatement ps2 = con.prepareStatement(createUsertable);
                             ps2.execute();
                         }
-                    } catch (SQLException e1) {
-
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
                         JOptionPane.showMessageDialog(
+                                
                                 frame,
-                                "Enter a valid valid and don't keep fields empty",
+                                "Enter a valid input and don't keep fields empty",
                                 "Warning",
                                 JOptionPane.WARNING_MESSAGE);
                     }
                 }
             }
         });
-        
-        panel.add(photo);
+
+        panel.add(answer1);
+        panel.add(answer2);
+        panel.add(answer3);
+        panel.add(questions_text);
+        panel.add(label1);
+        panel.add(label2);
+        panel.add(label3);
         panel.add(pincode_Label);
         panel.add(pincode_input_area);
         panel.add(select_date_button);

@@ -40,5 +40,7 @@ class Spin_the_wheel
         System.out.println("you have won nothing");
         else
         System.out.println("you have won "+sts);
+        bf1.close();
+        bf2.close();
     }
 }

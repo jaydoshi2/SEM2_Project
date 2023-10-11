@@ -13,6 +13,10 @@ import javax.swing.*;
 public class Shopping_template1 {
     public static JPanel panel = new JPanel();
     public static JFrame frame = new JFrame("Shopping center");
+    public static String subcategories;
+    public static String Category;
+    public static String attrbute;
+    public static String Gender;
 
     public static void main(String[] args) throws Exception {
 
@@ -69,6 +73,12 @@ public class Shopping_template1 {
         br.add(rb.get(1));
         br.add(rb.get(2));
 
+        JLabel subcategory_label = new JLabel("Do you want to choose the subcategory??");
+        subcategory_label.setFont(new Font("Arial", Font.BOLD, 15));
+        subcategory_label.setBounds(160, 230, 399, 40);
+
+        JToggleButtonExample.main(null);
+        panel.add(subcategory_label);
         panel.add(choose_cat);
         panel.add(rb.get(0));
         panel.add(rb.get(1));
@@ -85,21 +95,40 @@ public class Shopping_template1 {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String selectedGender = "";
+
                     if (maleRadioButton.isSelected()) {
-                        selectedGender = "male";
+                        Shopping_template1.Gender = "male";
                     }
                     if (femaleRadioButton.isSelected()) {
-                        selectedGender = "female";
+                        Shopping_template1.Gender = "female";
                     }
                     if (rb.get(0).isSelected()) {
-                        Category2.displaying_items_by_gender_and_category("Clothing", selectedGender);
+
+                        if (JToggleButtonExample.button.isSelected()) {
+
+                            
+                            
+
+                        } else {
+                            Category2.displaying_items_by_gender_and_category("Clothing", Shopping_template1.Gender);
+                        }
+
                     } else if (rb.get(1).isSelected()) {
-                        Category2.displaying_items_by_gender_and_category("Accessories", selectedGender);
+
+                        if (JToggleButtonExample.button.isSelected()) {
+
+                        } else {
+                            Category2.displaying_items_by_gender_and_category("Accessories", Shopping_template1.Gender);
+                        }
 
                     } else if (rb.get(2).isSelected()) {
-                        Category2.displaying_items_by_gender_and_category("Footwear", selectedGender);
-                        
+
+                        if (JToggleButtonExample.button.isSelected()) {
+
+                        } else {
+                            Category2.displaying_items_by_gender_and_category("Footwear", Shopping_template1.Gender);
+                        }
+
                     }
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -126,6 +155,22 @@ class Category2 {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
+    }
+
+    public static void displaying_items_by_subcategory(String category, String Gender) throws Exception {
+        String show_sub = "select subcategory  from " + category + " where gender=? group by subcategory";
+        PreparedStatement ps = con.prepareStatement(show_sub);
+        ps.setString(1, Gender);
+        ResultSet rs = ps.executeQuery();
+        Vector<String> subcategories = new Vector<>();
+
+        while (rs.next()) {
+            subcategories.add(rs.getString(1));
+        }
+        JDialog displaying_subcat1 = new JDialog(Shopping_template1.frame, "Select subcategory");
+        JComboBox<String> subcategories_box = new JComboBox<>(subcategories);
+        displaying_subcat1.add(subcategories_box);
+        // Shopping_template1.frame.add(displaying_subcat1);
     }
 
     public static void select_items_with_subcategory(String Gender, String Category) throws Exception {

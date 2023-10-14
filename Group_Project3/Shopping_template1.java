@@ -2,12 +2,14 @@ package Group_Project3;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.*;
 import java.sql.*;
-
 import javax.swing.*;
 
 public class Shopping_template1 {
@@ -76,8 +78,155 @@ public class Shopping_template1 {
         JLabel subcategory_label = new JLabel("Do you want to choose the subcategory??");
         subcategory_label.setFont(new Font("Arial", Font.BOLD, 15));
         subcategory_label.setBounds(160, 230, 399, 40);
-
         JToggleButtonExample.main(null);
+
+        JButton display_cart = new JButton("Display Cart");
+        display_cart.setBounds(900, 430, 200, 50);
+
+        JButton proceed_bill = new JButton("Proceed to bill");
+        proceed_bill.setBounds(900, 530, 200, 50);
+
+        proceed_bill.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog choose_bill_gatway = new JDialog(frame, "Methood of payments");
+                JButton Upi = new JButton("UPI");
+                JButton Cash_on_dilivery = new JButton("Cash on dilivery");
+                JButton by_card = new JButton("Card");
+                JLabel label = new JLabel("Enter the payment methood to pay the bill");
+                int total_amount = 0;
+                try {
+                    new Category2();
+                    String get_items = "Select * from " + Login_template.user_name;
+                    PreparedStatement pst = Category2.con.prepareStatement(get_items);
+                    ResultSet rs = pst.executeQuery();
+                    while (rs.next()) {
+                        total_amount += rs.getInt(9);
+                    }
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+
+                JLabel total_bill_label = new JLabel("Your total bill is " + total_amount);
+                choose_bill_gatway.setLayout(null);
+                choose_bill_gatway.setSize(700, 700);
+                choose_bill_gatway.setLocation(300, 10);
+
+                label.setBounds(100, 100, 100, 20);
+                choose_bill_gatway.add(label);
+
+                choose_bill_gatway.add(Upi);
+                choose_bill_gatway.add(Cash_on_dilivery);
+                choose_bill_gatway.add(by_card);
+                choose_bill_gatway.setVisible(true);
+            }
+
+        });
+
+        JButton check_transactioins = new JButton("Check your previous transactions");
+        check_transactioins.setBounds(900, 330, 300, 50);
+
+        check_transactioins.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FileOpenerExample.main1();
+            }
+
+        });
+        display_cart.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String dislpaying_cart = "Select * from " + Login_template.user_name;
+                    new Category2();
+                    PreparedStatement pst = Category2.con.prepareStatement(dislpaying_cart);
+                    ResultSet rst = pst.executeQuery();
+                    Hashtable<Integer, JCheckBox> items = new Hashtable<>();
+                    JDialog dialog = new JDialog();
+                    dialog.setTitle(Login_template.user_name + " CART");
+                    dialog.setModal(true);
+                    dialog.setLayout(new BorderLayout());
+                    dialog.setSize(800, 600);
+
+                    JPanel checkBoxPanel = new JPanel();
+                    checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
+
+                    while (rst.next()) {
+                        String itemText = String.format(
+                                ("cart_id " + rst.getInt(1) + " id:" + rst.getInt(2) + " Subcategory: "
+                                        + rst.getString(3) + " Product: "
+                                        + rst.getString(4) + " Gender: " + rst.getString(5) + " Brand: "
+                                        + rst.getString(6)
+                                        + " Size: " + rst.getString(7) + " Color: " + rst.getString(8) + " Prize: "
+                                        + rst.getDouble(9)));
+
+                        JCheckBox checkBox = new JCheckBox(itemText);
+                        items.put(rst.getInt(1), checkBox);
+                        checkBoxPanel.add(checkBox);
+
+                        JLabel separator = new JLabel(
+                                "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                        checkBoxPanel.add(separator);
+                    }
+
+                    JScrollPane scrollPane = new JScrollPane(checkBoxPanel);
+                    JButton delete_item = new JButton("Delete from Cart");
+
+                    delete_item.addActionListener(new ActionListener() {
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            boolean flag = true;
+                            for (Integer ids : items.keySet()) {
+                                if (items.get(ids).isSelected()) {
+                                    String deleting_item = "Delete from " + Login_template.user_name
+                                            + " where cart_id = ?";
+                                    try {
+                                        new Category2();
+                                        PreparedStatement deleting_statement = Category2.con
+                                                .prepareStatement(deleting_item);
+                                        deleting_statement.setInt(1, ids);
+                                        if (deleting_statement.executeUpdate() > 0) {
+                                            flag = true;
+                                        }
+                                    } catch (Exception e1) {
+                                        e1.printStackTrace();
+                                        JOptionPane.showMessageDialog(
+                                                Shopping_template1.frame,
+                                                "Failed",
+                                                "Warning",
+                                                JOptionPane.WARNING_MESSAGE);
+                                    }
+                                }
+                            }
+                            if (flag) {
+                                JOptionPane.showMessageDialog(Shopping_template1.frame,
+                                        "Items Deleted from " + Login_template.user_name + " cart",
+                                        "Success",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                dialog.dispose();
+                            }
+                        }
+
+                    });
+
+                    dialog.add(scrollPane, BorderLayout.CENTER);
+                    dialog.add(delete_item, BorderLayout.SOUTH);
+
+                    dialog.setVisible(true);
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+            }
+
+        });
+
+        panel.add(check_transactioins);
+        panel.add(proceed_bill);
+        panel.add(display_cart);
         panel.add(subcategory_label);
         panel.add(choose_cat);
         panel.add(rb.get(0));
@@ -105,9 +254,7 @@ public class Shopping_template1 {
                     if (rb.get(0).isSelected()) {
 
                         if (JToggleButtonExample.button.isSelected()) {
-
-                            
-                            
+                            Category2.displaying_items_by_subcategory("Clothing", Shopping_template1.Gender);
 
                         } else {
                             Category2.displaying_items_by_gender_and_category("Clothing", Shopping_template1.Gender);
@@ -116,7 +263,7 @@ public class Shopping_template1 {
                     } else if (rb.get(1).isSelected()) {
 
                         if (JToggleButtonExample.button.isSelected()) {
-
+                            Category2.displaying_items_by_subcategory("Accessories", Shopping_template1.Gender);
                         } else {
                             Category2.displaying_items_by_gender_and_category("Accessories", Shopping_template1.Gender);
                         }
@@ -124,14 +271,15 @@ public class Shopping_template1 {
                     } else if (rb.get(2).isSelected()) {
 
                         if (JToggleButtonExample.button.isSelected()) {
-
+                            Category2.displaying_items_by_subcategory("Footwear", Shopping_template1.Gender);
                         } else {
                             Category2.displaying_items_by_gender_and_category("Footwear", Shopping_template1.Gender);
                         }
 
                     }
-                } catch (Exception e1) {
-                    e1.printStackTrace();
+
+                } catch (Exception e2) {
+
                 }
             }
         });
@@ -142,10 +290,14 @@ class Category2 {
     static Scanner sc = new Scanner(System.in);
     static Connection con = null;
 
+    public Category2() throws Exception {
+        con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Online_Shopping_System", "postgres",
+                "1234");
+    }
+
     public static void displaying_items_by_gender_and_category(String category2, String Gender) {
         try {
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Online_Shopping_System", "postgres",
-                    "1234");
+            new Category2();
             String selectiog_product = "select * from " + category2 + " where gender = ? ";
             PreparedStatement ps2 = con.prepareStatement(selectiog_product);
             ps2.setString(1, Gender);
@@ -158,7 +310,10 @@ class Category2 {
     }
 
     public static void displaying_items_by_subcategory(String category, String Gender) throws Exception {
+        new Category2();
         String show_sub = "select subcategory  from " + category + " where gender=? group by subcategory";
+        JDialog displaying_subcat1 = new JDialog(Shopping_template1.frame, "Select subcategory", true);
+        displaying_subcat1.setLayout(new FlowLayout());
         PreparedStatement ps = con.prepareStatement(show_sub);
         ps.setString(1, Gender);
         ResultSet rs = ps.executeQuery();
@@ -167,46 +322,31 @@ class Category2 {
         while (rs.next()) {
             subcategories.add(rs.getString(1));
         }
-        JDialog displaying_subcat1 = new JDialog(Shopping_template1.frame, "Select subcategory");
+        displaying_subcat1.setSize(250, 100);
+        JButton okButton = new JButton("OK");
         JComboBox<String> subcategories_box = new JComboBox<>(subcategories);
-        displaying_subcat1.add(subcategories_box);
-        // Shopping_template1.frame.add(displaying_subcat1);
-    }
+        displaying_subcat1.setLocation(350, 300);
 
-    public static void select_items_with_subcategory(String Gender, String Category) throws Exception {
-        String show_sub = "select subcategory  from " + Category + " where gender=? group by subcategory";
-        PreparedStatement ps = con.prepareStatement(show_sub);
-        ps.setString(1, Gender);
-        ResultSet rs = ps.executeQuery();
-        JDialog dialog = new JDialog();
-        dialog.setTitle("subcategories");
-        dialog.setModal(true);
-        dialog.setLayout(new BorderLayout());
-        dialog.setSize(200, 200);
-
-        Hashtable<String, JRadioButton> subcats = new Hashtable<>();
-        JPanel radiobox_panel = new JPanel();
-
-        radiobox_panel.setLayout(new BoxLayout(radiobox_panel, BoxLayout.Y_AXIS));
-
-        while (rs.next()) {
-            String text = rs.getString(1);
-            JRadioButton rButton = new JRadioButton(text);
-            subcats.put(rs.getString(1), rButton);
-            radiobox_panel.add(rButton);
-        }
-        for (String subcategory : subcats.keySet()) {
-            if (subcats.get(subcategory).isSelected()) {
-                String subcategory_ouput = "Select *from " + Category + " where subcategory = ? and gender = ?";
-                PreparedStatement ps2 = con.prepareStatement(subcategory_ouput);
-                ps2.setString(1, subcategory);
-                ps2.setString(2, Gender);
-                printData(Category, ps2);
-                dialog.dispose();
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Get the selected item from the combo box
+                String selected_subcategory = (String) subcategories_box.getSelectedItem();
+                String subcategory_ouput = "Select *from " + category + " where subcategory = ? and gender = ?";
+                try {
+                    PreparedStatement ps = con.prepareStatement(subcategory_ouput);
+                    ps.setString(1, selected_subcategory);
+                    ps.setString(2, Gender);
+                    printData(category, ps);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+                displaying_subcat1.dispose(); // Close the dialog
             }
-        }
-        // Shopping_template1.panel.add(dialog);
-        dialog.setVisible(true);
+        });
+        displaying_subcat1.add(okButton);
+        displaying_subcat1.add(subcategories_box);
+        displaying_subcat1.setVisible(true);
     }
 
     public static void printData(String category2, PreparedStatement ps2) throws Exception {
@@ -222,13 +362,20 @@ class Category2 {
         checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
 
         while (rs.next()) {
-            String itemText = "id: " + rs.getInt(1) + " Subcategory: " + rs.getString(2) + " Product: " +
-                    rs.getString(3) + " Gender: " + rs.getString(4) + " Brand: " + rs.getString(5) +
-                    " Size: " + rs.getString(6) + " Color: " + rs.getString(7) + " Price: " + rs.getDouble(8);
+            String itemText = String.format(
+                    "ID: %2d  Subcategory: %-10s  Product: %-20s  Gender: %-6s  Brand: %-15s  Size: %-5s  Color: %-10s  Price: %.2f",
+                    rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6),
+                    rs.getString(7), rs.getDouble(8));
+
             JCheckBox checkBox = new JCheckBox(itemText);
             items.put(rs.getInt(1), checkBox);
             checkBoxPanel.add(checkBox);
+
+            JLabel separator = new JLabel(
+                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            checkBoxPanel.add(separator);
         }
+
         JScrollPane scrollPane = new JScrollPane(checkBoxPanel);
 
         JButton closeButton = new JButton("ADD TO CART");
@@ -276,5 +423,39 @@ class Category2 {
         dialog.add(closeButton, BorderLayout.SOUTH);
 
         dialog.setVisible(true);
+    }
+}
+
+class FileOpenerExample {
+
+    public static void main1() {
+        // Create a JFrame
+
+        // Create a JButton
+
+        // Create a file chooser
+        JFileChooser fileChooser = new JFileChooser(
+                "C:\\Java language\\java programs\\src\\JDBC\\" + Login_template.user_name);
+
+        int returnValue = fileChooser.showOpenDialog(null);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            openFile(selectedFile);
+        }
+    }
+
+    public static void openFile(File file) {
+        try {
+            Desktop desktop = Desktop.getDesktop();
+            if (desktop.isSupported(Desktop.Action.OPEN)) {
+                desktop.open(file);
+            } else {
+                System.out.println("Desktop is not supported on this platform");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error opening the file: " + e.getMessage());
+        }
     }
 }

@@ -2,6 +2,9 @@ package Group_Project3;
 
 import java.awt.*;
 import javax.swing.*;
+
+import org.postgresql.util.PSQLException;
+
 import java.sql.*;
 
 import com.toedter.calendar.JCalendar;
@@ -65,7 +68,7 @@ public class Login_template extends JFrame {
         Text.setBounds(150, 150, 200, 40);
         Text.setFont(new Font("Arial", Font.BOLD, 15));
 
-        JTextArea textArea = new JTextArea();
+        JTextField textArea = new JTextField();
         textArea.setBounds(350, 160, 100, 25);
 
         JPasswordField passwordArea = new JPasswordField();
@@ -77,7 +80,7 @@ public class Login_template extends JFrame {
         ImageIcon imageIcon1 = new ImageIcon("group_icon.jpg");
         JLabel imageLabel = new JLabel(imageIcon1);
         JPanel photo = new JPanel();
-        photo.setBounds(670, 300, 330, 403);
+        photo.setBounds(670, 300, 330, 380);
         photo.add(imageLabel);
 
         JButton Login_Button = new JButton("Login");
@@ -125,7 +128,6 @@ public class Login_template extends JFrame {
                     if (flag) {
                         JOptionPane.showMessageDialog(frame, "Login succesfull", "Success",
                                 JOptionPane.INFORMATION_MESSAGE);
-
                         Shopping_template1.main(null);
                     } else {
                         JOptionPane.showMessageDialog(frame, "Login Failed", "Error",
@@ -149,8 +151,37 @@ public class Login_template extends JFrame {
                                         answer1, question2, answer2, question3, answer3 },
                                         "Login", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                                         null, null);
-                                if (result == JOptionPane.OK_OPTION)
-                                    System.out.println(answer1.getText() + " " + new String(answer2.getText()));
+                                if (result == JOptionPane.OK_OPTION) {
+                                    String check_ans = "Select question1, question2, question3 from account_details  where user_name = ? group by question1,question2,question3;";
+                                    PreparedStatement ps = con.prepareStatement(check_ans);
+                                    ps.setString(1, Login_template.user_name);
+                                    ResultSet rs1 = ps.executeQuery();
+                                    while (rs1.next()) {
+                                        if (answer1.getText().equalsIgnoreCase(rs1.getString(1))
+                                                && answer2.getText().equalsIgnoreCase(rs1.getString(2))
+                                                && answer3.getText().equalsIgnoreCase(rs1.getString(3))) {
+                                            JTextField new_password = new JTextField();
+                                            String input = JOptionPane.showInputDialog("Enter the NEW PASSWORD",
+                                                    new_password);
+                                            boolean flag2 = false;
+                                            String regex1 = "^(?=.*[0-9])(?=.*[!@#$%^&*()-_=+\\\\|\\[{\\]};:'\",<.>/?]).{8,15}$";
+                                            Pattern pattern1 = Pattern.compile(regex1);
+                                            Matcher matcher1 = pattern1.matcher(input);
+                                            while (flag2 == false) {
+                                                if (matcher1.matches()) {
+                                                    flag = true;
+                                                    JOptionPane.showConfirmDialog(frame, "PASSWORD IS UPDATED");
+                                                } else {
+                                                    JOptionPane.showMessageDialog(
+                                                            frame,
+                                                            "Enter a valid password",
+                                                            "Warning",
+                                                            JOptionPane.WARNING_MESSAGE);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                                 break;
                             case JOptionPane.NO_OPTION:
 
@@ -163,6 +194,7 @@ public class Login_template extends JFrame {
 
                     }
                 } catch (Exception e1) {
+                    e1.printStackTrace();;
                     JOptionPane.showMessageDialog(frame, "Don't keep field empty", "Error",
                             JOptionPane.WARNING_MESSAGE);
                     falied_count++;
@@ -170,6 +202,7 @@ public class Login_template extends JFrame {
             }
         });
 
+        
         panel.add(photo);
         panel.add(redNote);
         panel.add(passwordArea);
@@ -219,23 +252,21 @@ public class Login_template extends JFrame {
         create_acct_Button.setBounds(400, 550, 150, 50);
 
         JLabel phone_no_label = new JLabel("Enter the phone number");
-        JTextArea phone_input_area = new JTextArea();
+        JTextField phone_input_area = new JTextField();
         phone_no_label.setBounds(130, 150, 200, 20);
         phone_no_label.setFont(new Font("Arial", Font.BOLD, 15));
         phone_input_area.setBounds(350, 150, 110, 20);
 
         JLabel email_label = new JLabel("Enter your email");
-        JTextArea email_input_area = new JTextArea();
+        JTextField email_input_area = new JTextField();
         email_label.setBounds(130, 200, 200, 20);
         email_label.setFont(new Font("Arial", Font.BOLD, 15));
         email_input_area.setBounds(350, 200, 110, 20);
-        email_input_area.setLineWrap(true);
-        email_input_area.setWrapStyleWord(true);
 
         JLabel city_label = new JLabel("Enter your City:");
         city_label.setFont(new Font("Arial", Font.BOLD, 15));
         city_label.setBounds(130, 250, 200, 20);
-        JTextArea city_input_area = new JTextArea(1, 20);
+        JTextField city_input_area = new JTextField();
         city_input_area.setBounds(350, 250, 110, 20);
 
         JLabel state_label = new JLabel("Enter your state");
@@ -256,7 +287,7 @@ public class Login_template extends JFrame {
         JLabel pincode_Label = new JLabel("Enter the pincode:");
         pincode_Label.setFont(new Font("Arial", Font.BOLD, 15));
         pincode_Label.setBounds(130, 340, 200, 20);
-        JTextArea pincode_input_area = new JTextArea(1, 20);
+        JTextField pincode_input_area = new JTextField();
         pincode_input_area.setBounds(350, 340, 110, 20);
 
         JLabel choose_date_label = new JLabel("Enter your Date of birth");
@@ -274,7 +305,7 @@ public class Login_template extends JFrame {
         JLabel Text = new JLabel("Enter your username:");
         Text.setBounds(130, 420, 200, 40);
         Text.setFont(new Font("Arial", Font.BOLD, 15));
-        JTextArea textArea = new JTextArea();
+        JTextField textArea = new JTextField();
         textArea.setBounds(350, 430, 100, 25);
 
         JPasswordField passwordArea = new JPasswordField();
@@ -305,7 +336,7 @@ public class Login_template extends JFrame {
         answer1.setBounds(850, 380, 110, 20);
         answer2.setBounds(850, 450, 110, 20);
         answer3.setBounds(750, 540, 110, 20);
-        
+
         create_acct_Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -376,10 +407,17 @@ public class Login_template extends JFrame {
                             PreparedStatement ps2 = con.prepareStatement(createUsertable);
                             ps2.execute();
                         }
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
+                    } catch (PSQLException p) {
                         JOptionPane.showMessageDialog(
-                                
+
+                                frame,
+                                "This user_name is already exsisted",
+                                "Warning",
+                                JOptionPane.WARNING_MESSAGE);
+
+                    } catch (Exception e1) {
+                    
+                        JOptionPane.showMessageDialog(
                                 frame,
                                 "Enter a valid input and don't keep fields empty",
                                 "Warning",

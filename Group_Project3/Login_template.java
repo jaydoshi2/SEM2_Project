@@ -127,7 +127,7 @@ public class Login_template extends JFrame {
                     }
                     if (flag) {
                         JOptionPane.showMessageDialog(frame, "Login succesfull", "Success",
-                                JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.INFORMATION_MESSAGE);   
                         Shopping_template1.main(null);
                     } else {
                         JOptionPane.showMessageDialog(frame, "Login Failed", "Error",
@@ -135,7 +135,7 @@ public class Login_template extends JFrame {
                         falied_count++;
                     }
 
-                    if (falied_count > 2) {
+                    if (falied_count > 2 && Login_Button.isSelected() == false) {
                         int result1 = JOptionPane.showConfirmDialog(frame, "Do you want to change the password ");
                         switch (result1) {
                             case JOptionPane.YES_OPTION:
@@ -161,7 +161,7 @@ public class Login_template extends JFrame {
                                                 && answer2.getText().equalsIgnoreCase(rs1.getString(2))
                                                 && answer3.getText().equalsIgnoreCase(rs1.getString(3))) {
                                             JTextField new_password = new JTextField();
-                                            String input = JOptionPane.showInputDialog("Enter the NEW PASSWORD",
+                                            String input = JOptionPane.showInputDialog("ENTER THE NEW PASSWORD",
                                                     new_password);
                                             boolean flag2 = false;
                                             String regex1 = "^(?=.*[0-9])(?=.*[!@#$%^&*()-_=+\\\\|\\[{\\]};:'\",<.>/?]).{8,15}$";
@@ -169,8 +169,13 @@ public class Login_template extends JFrame {
                                             Matcher matcher1 = pattern1.matcher(input);
                                             while (flag2 == false) {
                                                 if (matcher1.matches()) {
-                                                    flag = true;
-                                                    JOptionPane.showConfirmDialog(frame, "PASSWORD IS UPDATED");
+                                                    flag2 = true;
+                                                    String update_password = "UPDATE account_details SET password = ? where user_name =?";
+                                                    PreparedStatement pst = con.prepareStatement(update_password);
+                                                    pst.setString(1, input);
+                                                    pst.setString(2,user_name);
+                                                    pst.executeUpdate();
+                                                    JOptionPane.showMessageDialog(frame, "PASSWORD IS UPDATED");
                                                 } else {
                                                     JOptionPane.showMessageDialog(
                                                             frame,
@@ -179,6 +184,12 @@ public class Login_template extends JFrame {
                                                             JOptionPane.WARNING_MESSAGE);
                                                 }
                                             }
+                                        }else{
+                                            JOptionPane.showMessageDialog(
+                                                frame,
+                                                "INVALID INFO",
+                                                "Warning",
+                                                JOptionPane.WARNING_MESSAGE);
                                         }
                                     }
                                 }

@@ -90,11 +90,7 @@ public class Shopping_template1 {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog choose_bill_gatway = new JDialog(frame, "Methood of payments");
-                JButton Upi = new JButton("UPI");
-                JButton Cash_on_dilivery = new JButton("Cash on dilivery");
-                JButton by_card = new JButton("Card");
-                JLabel label = new JLabel("Enter the payment methood to pay the bill");
+
                 int total_amount = 0;
                 try {
                     new Category2();
@@ -107,19 +103,9 @@ public class Shopping_template1 {
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
+                BillPaymentPanel.billing(total_amount);
 
-                JLabel total_bill_label = new JLabel("Your total bill is " + total_amount);
-                choose_bill_gatway.setLayout(null);
-                choose_bill_gatway.setSize(700, 700);
-                choose_bill_gatway.setLocation(300, 10);
 
-                label.setBounds(100, 100, 100, 20);
-                choose_bill_gatway.add(label);
-
-                choose_bill_gatway.add(Upi);
-                choose_bill_gatway.add(Cash_on_dilivery);
-                choose_bill_gatway.add(by_card);
-                choose_bill_gatway.setVisible(true);
             }
 
         });

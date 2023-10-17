@@ -3,6 +3,9 @@ package Group_Project3;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 class Spin_the_wheel
 {
     public static String sts = null;
@@ -37,9 +40,11 @@ class Spin_the_wheel
             sts=line2;
         }
         if(sts.equals(""))
-        System.out.println("you have won nothing");
-        else
-        System.out.println("you have won "+sts);
+        JOptionPane.showMessageDialog(Shopping_template1.frame, "Unforunately you won nothing");
+        else{
+            ImageIcon party_emoji = new ImageIcon("C:\\Java language\\java programs\\src\\JDBC\\src\\Party_Face_Emoji.png");
+            JOptionPane.showMessageDialog(Shopping_template1.frame,party_emoji);
+        }
         bf1.close();
         bf2.close();
     }

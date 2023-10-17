@@ -113,7 +113,7 @@ public class _1Users_UI {
                                               
                                                     String update_password = "UPDATE account_details SET password = ? where user_name =?";
                                                     PreparedStatement pst = con.prepareStatement(update_password);
-                                                    pst.setString(1, update_password);
+                                                    pst.setString(1, new_pass);
                                                     pst.setString(2,user_id1);
         
                                                     if(pst.executeUpdate()>0){

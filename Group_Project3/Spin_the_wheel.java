@@ -10,7 +10,7 @@ class Spin_the_wheel
 {
     public static String sts = null;
     public static void main(String[] args) throws Exception {
-        FileReader fr1=new FileReader("C:\\Java language\\java programs\\src\\JDBC\\src\\Group_Project3\\COUPONS.txt");
+        FileReader fr1=new FileReader("D:\\Java language\\java programs\\src\\JDBC\\src\\Group_Project3\\COUPONS.txt");
         BufferedReader bf1=new BufferedReader(fr1);
         String line=bf1.readLine();
         int count=0;
@@ -28,7 +28,7 @@ class Spin_the_wheel
             num=(int)(Math.random()*range)+min;
                 
         }
-        FileReader fr2=new FileReader("C:\\Java language\\java programs\\src\\JDBC\\src\\Group_Project3\\COUPONS.txt");
+        FileReader fr2=new FileReader("D:\\Java language\\java programs\\src\\JDBC\\src\\Group_Project3\\COUPONS.txt");
         BufferedReader bf2=new BufferedReader(fr2);
         String line2;
         int  temp=0;
@@ -42,7 +42,7 @@ class Spin_the_wheel
         if(sts.equals(""))
         JOptionPane.showMessageDialog(Shopping_template1.frame, "Unforunately you won nothing");
         else{
-            ImageIcon party_emoji = new ImageIcon("C:\\Java language\\java programs\\src\\JDBC\\src\\Party_Face_Emoji.png");
+            ImageIcon party_emoji = new ImageIcon("D:\\Java language\\java programs\\src\\JDBC\\src\\Party_Face_Emoji.png");
             JOptionPane.showMessageDialog(Shopping_template1.frame,party_emoji);
         }
         bf1.close();

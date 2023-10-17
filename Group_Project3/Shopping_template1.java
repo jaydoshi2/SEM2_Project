@@ -421,7 +421,7 @@ class FileOpenerExample {
 
         // Create a file chooser
         JFileChooser fileChooser = new JFileChooser(
-                "C:\\Java language\\java programs\\src\\JDBC\\" + Login_template.user_name);
+                "D:\\Java language\\java programs\\src\\JDBC\\" + Login_template.user_name);
 
         int returnValue = fileChooser.showOpenDialog(null);
 

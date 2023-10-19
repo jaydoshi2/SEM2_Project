@@ -20,9 +20,8 @@ class BillPaymentPanel extends JFrame {
     static int total_amt = 0;
 
     public BillPaymentPanel(int total_amt) {
-        this.total_amt = total_amt;
         setTitle("Bill Payment");
-        setSize(400, 200);
+        setSize(450, 150);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
@@ -38,11 +37,12 @@ class BillPaymentPanel extends JFrame {
                 ImageIcon upi = new ImageIcon("D:\\Java language\\java programs\\src\\JDBC\\src\\Upi.jpg");
                 int width = upi.getIconWidth();
                 int height = upi.getIconHeight();
-                JDialog upi_rep = new JDialog(Shopping_template1.frame, "Jay doshi upi id");
-                upi_rep.setSize(width, height);
+                JDialog upi_img_dialog = new JDialog(Shopping_template1.frame, "Jay doshi upi id");
+                upi_img_dialog.setSize(width, height);
                 JLabel jp = new JLabel(upi);
-                upi_rep.add(jp, BorderLayout.CENTER);
-                upi_rep.setVisible(true);
+                upi_img_dialog.add(jp, BorderLayout.CENTER);
+                upi_img_dialog.setLocation(540, 220);
+                upi_img_dialog.setVisible(true);
             }
         });
 
@@ -145,9 +145,6 @@ class BillPaymentPanel extends JFrame {
                         }
                     }
                     check_your_luck.setVisible(false);
-                    totalBillLabel = new JLabel("Total Bill Amount:" + total_amt); // Replace with your actual bill
-                                                                                   // amount
-                    panel.add(totalBillLabel, BorderLayout.NORTH);
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -162,6 +159,12 @@ class BillPaymentPanel extends JFrame {
         add(panel);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public static void bill_description() {
+
+        JDialog bill_Dialog = new JDialog(Shopping_template1.frame, "Bill payment");
+        JLabel totalBillLabel = new JLabel("Total Bill Amount:" + total_amt); // Replace with your actual bill
     }
 
     public static void billing(int total_amount) {

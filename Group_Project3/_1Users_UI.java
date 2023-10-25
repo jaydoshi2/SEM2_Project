@@ -210,9 +210,9 @@ public class _1Users_UI {
                                                     if (pass.charAt(k) >= 'a' && pass.charAt(k) <= 'z') {
                                                         lower = 1;
                                                     }
-                                                    // if (pass.charAt(k) >= '!' && pass.charAt(k) <= '+') {
-                                                    // symbol = 1;
-                                                    // }
+                                                    if (pass.charAt(k) >= '!' && pass.charAt(k) <= '+') {
+                                                    symbol = 1;
+                                                    }
                                                     if (pass.charAt(k) >= '0' && pass.charAt(k) <= '9') {
                                                         digit = 1;
                                                     }

@@ -489,7 +489,7 @@ class JToggleButtonExample extends JFrame implements ItemListener {
 }
 
 class BillPaymentPanel extends JFrame {
-    private JLabel totalBillLabel;
+    // private JLabel totalBillLabel;
     public static String sts = null;
     static int total_amt = 0;
 
@@ -637,8 +637,8 @@ class BillPaymentPanel extends JFrame {
 
     public static void bill_description() {
 
-        JDialog bill_Dialog = new JDialog(Shopping_template1.frame, "Bill payment");
-        JLabel totalBillLabel = new JLabel("Total Bill Amount:" + total_amt); // Replace with your actual bill
+        // JDialog bill_Dialog = new JDialog(Shopping_template1.frame, "Bill payment");
+        // JLabel totalBillLabel = new JLabel("Total Bill Amount:" + total_amt); // Replace with your actual bill
     }
 
     public static void billing(int total_amount) {

@@ -9,7 +9,7 @@ public class _2Shopping_Centre_UI {
     static Scanner sc = new Scanner(System.in);
 
     public static void shopping_Center() throws Exception {
-        System.out.println("Welcome to the Shopping Centre of Lj ");
+        System.out.println("Welcomsuhafjasdhfjksdhfjkasde to the Shopping Centre of Lj ");
         System.out.println("Enter the Gender ");
         String Gender = sc.nextLine();
         choosing_category_display(Gender);

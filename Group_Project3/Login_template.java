@@ -308,7 +308,7 @@ public class Login_template extends JFrame {
             select_date_button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Calendar_panel.date_selector();
+                    // Calendar_panel.date_selector();
                 }
             });
 

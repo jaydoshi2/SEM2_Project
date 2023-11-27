@@ -496,7 +496,7 @@ class BillPaymentPanel extends JFrame {
     public BillPaymentPanel(int total_amt) {
         setTitle("Bill Payment");
         setSize(450, 150);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());

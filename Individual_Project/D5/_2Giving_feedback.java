@@ -1,4 +1,4 @@
-package Individual_Project;
+package JDBC.src.Individual_Project.D5;
 
 import java.util.*;
 import java.sql.*;

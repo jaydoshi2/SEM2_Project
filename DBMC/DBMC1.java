@@ -1,4 +1,4 @@
-package DBMC;
+package JDBC.src.DBMC;
 import java.sql.*;
 public class DBMC1 {
     public static void main(String[] args) throws Exception{

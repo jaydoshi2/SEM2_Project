@@ -1,4 +1,4 @@
-package QB;
+package JDBC.src.QB;
 import java.sql.*;
 
 public class Prepare1 {

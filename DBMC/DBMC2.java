@@ -1,4 +1,4 @@
-package DBMC;
+package JDBC.src.DBMC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

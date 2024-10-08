@@ -62,6 +62,7 @@ OnlineShoppingSystem/
 ├── Spin_the_wheel.java        # Logic for the lucky spin feature
 ├── progressbar.java           # Progress bar UI element implementation
 └── README.md                  # Project documentation
+```
 
 ## 🛠️ Technologies Used
 - **Java Swing**: For creating a responsive desktop user interface.

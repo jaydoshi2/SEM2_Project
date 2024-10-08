@@ -8,6 +8,7 @@
 </p>
 
 *Note: For a better viewing experience, you can watch the video at **1.5x speed**.*
+
 ---
 
 ## 📚 Project Overview

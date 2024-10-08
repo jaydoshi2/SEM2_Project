@@ -7,6 +7,7 @@
   </a>
 </p>
 
+Note: Watch at 1.5x speed
 ---
 
 ## 📚 Project Overview
